@@ -107,7 +107,7 @@ app.post('/assign',async(req,res)=>{
     var d = req.body;
     await sql.query`insert into AssetAssignment (AssetID,UserID,StartDate,EndDate,CreatedBy,CreatedDate,CreatedIT) values
     (${d.asset},${d.user},${d.startdate},${d.enddate},'admin',getdate(),'desktop999')`
-    res.send("asset assigned")
+    res.redirect('/assetassign')
 })
 app.get('/addasset',async(req,res)=>{
     var locs = await sql.query`select * from LocationMaster`
@@ -123,7 +123,7 @@ app.post('/assetadd',async(req,res)=>{
     var d = req.body
     await sql.query`insert into AssetMaster (AssetDesc,Model,SerialNo,TypeID,BrandID,LocationID,DeptID,PurchaseDate,AssetNo,Qty,FlagID)
     values (${d.specs},${d.model},${d.serialno},${d.type},${d.brand},${d.location},${d.depts},${d.purchasedate},${d.assetno},${d.qty},${d.condition})`
-    res.send("Asset Added")
+    res.redirect('/assetlist')
 })
 
 app.get('/addlocation',async(req,res)=>{
@@ -150,30 +150,50 @@ app.get('/assetbrand',async(req,res)=>{
 app.post('/addloc',async(req,res)=>{
     var data = req.body
     await sql.query`insert into LocationMaster(LocationDesc) values (${data.location})`
-    var locs = await sql.query`select * from LocationMaster`
-   locs = locs.recordset
-   res.render('addlocation',{
-       locs
-   })
+    res.redirect('/addlocations')
 })
 app.post('/addtype',async(req,res)=>{
     var data = req.body
     await sql.query`insert into AssetType(TypeDesc) values (${data.type})`
-    var types = await sql.query`select * from AssetType`
-    types = types.recordset
-    res.render('assettype',{
-        types
-    })
+    res.redirect('/assettype')
 })
 app.post('/addbrand',async(req,res)=>{
     var data = req.body
     await sql.query`insert into BrandMaster(BrandDesc) values (${data.brand})`
-    var brands = await sql.query`select * from BrandMaster`
-    brands = brands.recordset
-    res.render('addbrand',{
-        brands
+    res.redirect('/assetbrand')
+})
+
+app.get('/assetlist',async(req,res)=>{
+    var assetlist = await sql.query`select * from AssetMaster`
+    assetlist=assetlist.recordset
+    res.render('AssetList',{
+        assetlist
     })
 })
 
+app.get('/delete',async(req,res)=>{
+    var AssetID = req.query.id
+    await sql.query`delete from AssetAssignment where AssetID=${AssetID}`
+    await sql.query`delete from AssetMaster where AssetID=${AssetID}`
+    res.redirect('/assetlist')
+})
 
+app.get('/edit',async(req,res)=>{
+    var locs = await sql.query`select * from LocationMaster`
+    var depts = await sql.query`select * from DeptMaster`
+    var brands = await sql.query`select * from BrandMaster`
+    var types = await sql.query`select * from AssetType`
+    locs = locs.recordset; depts=depts.recordset; brands = brands.recordset; types=types.recordset
+    var AssetID = req.query.id
+    var asset = await sql.query`select * from AssetMaster where AssetID=${AssetID}`
+    asset=asset.recordset
+    res.render('editpg',{
+        asset,locs,depts,brands,types
+    })
+})
 
+app.post('/assetedit',async(req,res)=>{
+    var d = req.body
+    await sql.query`update AssetMaster set AssetDesc=${d.specs},Model=${d.model},SerialNo=${d.serialno},TypeID=${d.type},BrandID=${d.brand},LocationID=${d.location},DeptID=${d.depts},PurchaseDate=${d.purchasedate},AssetNo=${d.assetno},Qty=${d.qty},FlagID=${d.condition} where AssetID=${d.assetid}`
+    res.redirect('/assetlist')
+})

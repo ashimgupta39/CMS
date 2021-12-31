@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     
-    <title>Asset Assign Page</title>
+    <title>Edit Asset Page</title>
     <style>
     .navbar{
     border-bottom: #6C63FF 3px solid;
@@ -62,25 +62,52 @@
     
     <div class="card primecolor text-center card-form">
         <div class="card-body">
-            <h2 style="text-align:center;" class="text-primary">Assign Asset</h2>
-            <form action="/assign" method="POST" >
-                <div style="text-align: left;">Choose the Asset You Want to Assign</div>
-                    <select name="asset" class="form-control form-group form-control-lg">
-                        {{#each assets as |a|}}
-                            <option value="{{a.AssetID}}">{{a.AssetID}}</option>
+            <h2 style="text-align:center;" class="text-primary">Edit Asset</h2>
+            <form action="/assetedit" method="POST" id="frm">
+                <input name="assetid" type="hidden" value="{{#each asset as |a|}}{{a.AssetID}}{{/each}}" class="form-control form-group form-control-lg" >  
+                <div style="text-align: left;">Choose the Type of the Asset</div>
+                    <select name="type" value="{{#each asset as |a|}}{{a.TypeID}}{{/each}}" class="form-control form-group form-control-lg">
+                        {{#each types as |t|}}
+                            <option value="{{t.TypeID}}">{{t.TypeDesc}}</option>
                         {{/each}}
                     </select>
-                <div style="text-align: left;">Choose the User You Want to Assign the Asset to</div>
-                    <select name="user" class="form-control form-group form-control-lg">
-                        {{#each users as |a|}}
-                            <option value="{{a.UserID}}">{{a.UserName}}</option>
+                <div style="text-align: left;">Describe the Asset Specifications</div>
+                <textarea name="specs" class="form-control form-group form-control-lg" form="frm">{{#each asset as |a|}}{{a.AssetDesc}}{{/each}}</textarea>
+                <div style="text-align: left;">Enter the Model of the Asset</div>
+                <input name="model" value="{{#each asset as |a|}}{{a.Model}}{{/each}}" type="text" class="form-control form-group form-control-lg"   >
+                <div style="text-align: left;">Enter the Serial No. of the Asset</div>
+                <input name="serialno" type="text" value="{{#each asset as |a|}}{{a.SerialNo}}{{/each}}" class="form-control form-group form-control-lg" >  
+                <div style="text-align: left;">Enter the Asset No. of the Asset</div>
+                <input name="assetno" type="text" value="{{#each asset as |a|}}{{a.AssetNo}}{{/each}}" class="form-control form-group form-control-lg" >  
+                <div style="text-align: left;">Choose the Brand of the Asset</div>
+                    <select name="brand" value="{{#each asset as |a|}}{{a.BrandID}}{{/each}}" class="form-control form-group form-control-lg">
+                        {{#each brands as |b|}}
+                            <option value="{{b.BrandID}}">{{b.BrandDesc}}</option>
                         {{/each}}
                     </select>
-                <div style="text-align: left;">Start Date</div>
-                <input name="startdate" type="date" class="form-control form-group form-control-lg" > 
-                <div style="text-align: left;">End Date</div>
-                <input name="enddate" type="date" class="form-control form-group form-control-lg" > 
-         <input type="submit" value="Assign" class="btn bg-primary text-light btn-block">
+                <div style="text-align: left;">Choose the Location for the Asset</div>
+                    <select name="location" class="form-control form-group form-control-lg">
+                        {{#each locs as |l|}}
+                            <option value="{{l.LocationID}}">{{l.LocationDesc}}</option>
+                        {{/each}}
+                    </select>
+                <div style="text-align: left;">Choose Department</div>
+                <select name="depts" class="form-control form-group form-control-lg">
+                    {{#each depts as |d|}}
+                        <option value="{{d.DeptID}}">{{d.DeptName}}</option>
+                    {{/each}}
+                </select>
+                <div style="text-align: left;">Enter Purchase Date of the Asset</div>
+                <input name="purchasedate" value="{{#each asset as |a|}}{{dateFormat a.PurchaseDate format='DD/MM/YYYY'}}{{/each}}" type="date" class="form-control form-group form-control-lg" > 
+
+                <div style="text-align: left;">Select the Condition of the Asset</div>
+                <select name="condition" class="form-control form-group form-control-lg">
+                    <option value="1">Working</option>
+                    <option value="2">Not Working</option>
+                </select>
+                <div style="text-align: left;">Select the Quantity of Assets</div>
+                <input name="qty" value="{{#each asset as |a|}}{{a.Qty}}{{/each}}" type="number" class="form-control form-group form-control-lg" > 
+         <input type="submit" value="Update" class="btn bg-primary text-light btn-block">
                 <br>
                 
         </div>
