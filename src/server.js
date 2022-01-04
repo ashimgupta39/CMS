@@ -3,6 +3,8 @@ const express = require("express")
 const app = express()
 const hb = require('hbs');
 const moment = require("moment");
+const nodemailer = require("nodemailer")
+const mailGun = require("nodemailer-mailgun-transport")
 const { type } = require("express/lib/response");
 
 hb.registerHelper('dateFormat', function (date, options) {
@@ -69,13 +71,17 @@ app.post('/registeruser',async(req,res)=>{
 
 app.post('/loginuser',async(req,res)=>{
     var data = req.body
-    let details = await sql.query`select * from UserMaster where EmailId=${data.email} and PasswordHash=HASHBYTES('SHA2_512',${data.passwd})`
+    var details = await sql.query`select * from UserMaster where EmailId=${data.email} and PasswordHash=HASHBYTES('SHA2_512',${data.passwd})`
     details=details.recordset
     if(details==''){
         res.send('login unsuccessful')
     }
     else{
-        res.send('login successful')
+        var d = await sql.query`select * from AssetMaster where AssetID in (select AssetID from AssetAssignment where UserID=${details[0].UserID})`
+        d=d.recordset
+        res.render('complaintpg',{
+            d,details
+        })
     }
 })
 
@@ -96,7 +102,7 @@ app.post('/authorizeuser',async(req,res)=>{
 })
 
 app.get('/assetassign',async(req,res)=>{
-    var assets = await sql.query`select * from AssetMaster`
+    var assets = await sql.query`select * from AssetMaster where AssetID not in (select AssetID from AssetAssignment)`
     var users = await sql.query`select * from UserMaster`
     assets = assets.recordset; users = users.recordset;
     res.render('assetassign',{
@@ -196,4 +202,34 @@ app.post('/assetedit',async(req,res)=>{
     var d = req.body
     await sql.query`update AssetMaster set AssetDesc=${d.specs},Model=${d.model},SerialNo=${d.serialno},TypeID=${d.type},BrandID=${d.brand},LocationID=${d.location},DeptID=${d.depts},PurchaseDate=${d.purchasedate},AssetNo=${d.assetno},Qty=${d.qty},FlagID=${d.condition} where AssetID=${d.assetid}`
     res.redirect('/assetlist')
+})
+
+app.post('/complaint',async(req,res)=>{
+    var data = req.body
+    const email = data.email
+    await sql.query`insert into Complaint (AssetID,ComplaintDesc) values (${data.asset},${data.complaint})`
+    var mail = `
+    <h1>AssetID: ${data.asset}</h1>
+    <h1>Complaint-</h1>
+    <br>
+    <p>${data.complaint}</p>
+    `
+
+    const auth = {
+        auth:{
+            domain: 'sandbox656ed740c41e43c6b33ea72dc214500c.mailgun.org', // generated ethereal user
+            api_key: 'fb85c0e78751e45c3fd74c5f6984bdd7-0be3b63b-14706682', // generated ethereal password
+        }
+    };
+    const transporter = nodemailer.createTransport(mailGun(auth));
+
+    // send mail with defined transport object
+    transporter.sendMail({
+        from: email, // sender address
+        to: "agupta34_be19@thapar.edu", // list of receivers
+        subject: "Complaint", // Subject line
+        text: "Hello world?", // plain text body
+        html: mail, // html body
+    });
+    res.send("complaint sent")
 })
