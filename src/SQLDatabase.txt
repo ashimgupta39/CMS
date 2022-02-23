@@ -1,0 +1,131 @@
+create database CMS
+use CMS
+create table UnitMaster
+(
+UnitID int identity(1,1) primary key not null,
+UnitName varchar(80) not null
+)
+create table DeptMaster
+(
+DeptID int identity(1,1) primary key not null,
+DeptName varchar(80) not null
+)
+create table UserMaster
+(
+UserID int identity(10,10) primary key not null,
+PasswordHash binary(64) not null,
+EmailId varchar(80) not null,
+Phone bigint not null,
+UserName varchar(80) not null,
+DeptId int not null,
+UnitId int not null,
+UserType varchar(80) not null
+)
+alter table UserMaster add constraint Chk_UserType check (UserType in ('Admin','Superuser','Enduser','Normaluser'))
+create table UserAuth
+(
+UserID int foreign key references UserMaster(UserID) not null,
+UnitID int not null,
+StartDate date not null,
+EndDate date default '31-12-9999'
+)
+
+create table LocationMaster
+(
+LocationID int identity(1,1) primary key not null,
+LocationDesc varchar(500) not null
+)
+
+create table AssetType
+(
+TypeID int identity(1,1) primary key not null,
+TypeDesc varchar(500) not null
+)
+
+create table BrandMaster
+(
+BrandID int identity(1,1) primary key not null,
+BrandDesc varchar(500) not null
+)
+
+create table AssetFlag
+(
+FlagID int identity(1,1) primary key not null,
+condition varchar(50) 
+)
+alter table AssetFlag alter column condition int
+create table AssetMaster
+(
+AssetID int identity(1,1) primary key not null,
+AssetDesc varchar(500) not null,
+Model varchar(80) not null,
+SerialNo varchar(80) not null,
+TypeID int foreign key references AssetType(TypeID) not null,
+BrandID int foreign key references BrandMaster(BrandID) not null,
+LocationID int foreign key references LocationMaster(LocationID) not null,
+DeptID int foreign key references DeptMaster(DeptID) not null,
+PurchaseDate date not null,
+AssetNo varchar(100) not null,
+Qty int not null,
+FlagID int foreign key references AssetFlag(FlagID) not null,
+)
+
+create table AssetAssignment
+(
+AssetID int foreign key references AssetMaster(AssetID) not null,
+UserID int foreign key references UserMaster(UserID) not null,
+StartDate date not null,
+EndDate date default '31-12-9999' not null,
+CreatedBy varchar(100) not null,
+CreatedDate datetime not null,
+CreatedIT varchar(50) not null
+)
+
+create table Complaint
+(
+ComplaintID int identity(1,1) primary key not null,
+AssetID int foreign key references AssetMaster(AssetID) not null,
+UserID int foreign key references UserMaster(UserID) not null,
+CloseDate date not null,
+ComplaintDesc varchar(2000) not null
+)
+
+
+create table AssignedComplaints
+(
+AssignedComplaintsID int identity(1,1) primary key not null,
+AssignedBy int not null,
+AssignedTo int not null,
+ReopenedTimes int default 0 not null,
+AssetID int foreign key references AssetMaster(AssetID) not null,
+UserID int foreign key references UserMaster(UserID) not null,
+CloseDate date not null,
+ComplaintDesc varchar(2000) not null,
+)
+
+create table ComplaintsReopened
+(
+ComplainersUserID int foreign key references UserMaster(UserID) not null,
+AssetID int foreign key references AssetMaster(AssetID) not null,
+ComplaintDesc varchar(2000) not null,
+AssignedCloseDate date not null,
+Remarks varchar(2000) not null,
+ReopenReason varchar(2000) not null,
+AssignedBy int not null,
+AssignedTo int not null,
+ReopenedTimes int not null
+)
+create table ClosedComplaints
+(
+CloseComplaintID int identity(1,1) primary key not null,
+ClosersUserID int foreign key references UserMaster(UserID) not null,
+ComplainersUserID int foreign key references UserMaster(UserID) not null,
+AssetID int foreign key references AssetMaster(AssetID) not null,
+ComplaintDesc varchar(2000) not null,
+CloseDate date not null,
+AssignedCloseDate date not null,
+Remarks varchar(2000) not null,
+AssignedBy int not null,
+AssignedTo int not null,
+ReopenedTimes int not null
+)
