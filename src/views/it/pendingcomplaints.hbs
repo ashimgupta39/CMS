@@ -9,8 +9,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    
-    <title>Add Location Page</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <title>Pending Complaints Page</title>
     <style>
     .navbar{
     border-bottom: #6C63FF 3px solid;
@@ -26,13 +26,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor"  href="login">Log In</a>
+                        <a class="nav-link primetextcolor" href="pendingcomplaints">Pending Complaints</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="signup">Sign Up</a>
+                        <a class="nav-link primetextcolor" href="closedcomplaints">Closed Complaints</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="authorize">User Authorization</a>
+                        <a class="nav-link primetextcolor" href="complaintsreopened">Reopened Complaints</a>
                     </li>
                     <li class="nav-item">
                         <div class="dropdown show">
@@ -49,6 +49,12 @@
                             </div>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link primetextcolor" href="#">Hi, {{username}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link primetextcolor" href="logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -57,44 +63,52 @@
     <br>
     <div class="container">
         <div class="row py-5">
-            <div class="col-lg-4"></div>
-<div class="col-lg-5 w-250" style="width: 700px;">
-    
-    <div class="card primecolor text-center card-form">
-        <div class="card-body">
-            <h2 style="text-align:center;" class="text-primary">Add Location</h2>
-        <form action="/addloc" method="POST">
-        <div style="text-align: left;">Enter Location You Want to Add</div>
-        <input name="location" type="text" class="form-control form-group form-control-lg">
-         <input type="submit" value="Add" class="btn bg-primary text-light btn-block">
-            <br>
-            </form>
-            <div style="text-align: left;">Locations Table</div>
-        <table class="table table-bordered">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Location ID</td>
-                    <th scope="col">Location Description</td>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each locs as |a|}}
-                    <tr>
-                    <td>{{a.LocationID}}</td>
-                    <td>{{a.LocationDesc}}</td>
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
+            <div class="col-lg-0"></div>
+            <div class="col-lg-9 w-300" style="width: 900px;">
+                <div class="table-responsive-md">
+                    <h3 class="text-primary">Pending Complaints Page</h3>
+                    <table class="table table-striped table-bordered table-md">
+                    <thead class="bg-primary text-light">
+                        <tr>
+                        <th scope="col">Sr No.</th>
+                        <th scope="col">AssignedComplaintID</th>
+                        <th scope="col">AssignedBy</th>
+                        <th scope="col">ReopenedTimes</th>
+                        <th scope="col">AssetID</th>
+                        <th scope="col">CloseDate</th>
+                        <th scope="col">ComplaintDesc</th>
+                        <th scope="col">Edit Close Date</th>
+                        <th scope="col">Close Complaint</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each complaints as |a|}}
+                        <tr>
+                        {{#rh a.CloseDate}}{{body}}{{/rh}}
+                        <td>{{a.AssignedComplaintsID}}</td>
+                        <td>{{a.AssignedBy}}</td>
+                        <td>{{a.ReopenedTimes}}</td>
+                        <td>{{a.AssetID}}</td>
+                        <td>{{dateFormat a.CloseDate format='DD/MM/YYYY'}}</td>
+                        <td>{{a.ComplaintDesc}}</td>
+                        <td>
+                            <a style="font-size: 24px;" href="/editclosedatepg?id={{a.AssignedComplaintsID}}">
+                                <img src="https://cdn-icons-png.flaticon.com/512/32/32355.png" width="24" height="24">
+                            </a>
+                        </td>
+                        <td>
+                            <a style="font-size: 24px;" href="/closecomplaintpg?id={{a.AssignedComplaintsID}}">
+                                <img src="https://img.icons8.com/ios-glyphs/30/000000/delete-sign.png" width="24" height="24"/>
+                            </a>
+                        </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-0"></div>
         </div>
     </div>
-        </div>
-        <div class="col-lg-4"></div>
-    </div>
-    
-</div>
-<script>
-
-</script>
 </body>
 </html>

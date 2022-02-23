@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     
-    <title>Authorization Page</title>
+    <title>Add Location Page</title>
     <style>
     .navbar{
     border-bottom: #6C63FF 3px solid;
@@ -26,13 +26,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor"  href="login">Log In</a>
+                        <a class="nav-link primetextcolor" href="pendingcomplaints">Pending Complaints</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="signup">Sign Up</a>
+                        <a class="nav-link primetextcolor" href="closedcomplaints">Closed Complaints</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="authorize">User Authorization</a>
+                        <a class="nav-link primetextcolor" href="complaintsreopened">Reopened Complaints</a>
                     </li>
                     <li class="nav-item">
                         <div class="dropdown show">
@@ -49,6 +49,12 @@
                             </div>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link primetextcolor" href="#">Hi, {{username}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link primetextcolor" href="logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -62,46 +68,28 @@
     
     <div class="card primecolor text-center card-form">
         <div class="card-body">
-            <h2 style="text-align:center;" class="text-primary">Authorization Page</h2>
-        <form action="/authorizeuser" method="POST">
-         <div style="text-align: left;">Choose UserID You Want to Authorize</div>
-         <select name="userid" class="userid form-control form-group form-control-lg">
-             {{#each users as |u|}}
-                <option value="{{u.UserID}}">{{u.UserName}}</option>
-            {{/each}}
-        </select>
-         <div style="text-align: left;">Choose Unit You Want to Authorize</div>
-         <select name="unitid" class="form-control form-group form-control-lg">
-             {{#each units as |u|}}
-                <option value="{{u.UnitID}}">{{u.UnitName}}</option>
-            {{/each}}
-        </select>
-        <div style="text-align: left;">Choose Start Date</div>
-        <input name="startdate" type="date" class="form-control form-group form-control-lg">
-        <div style="text-align: left;">Choose End Date</div>
-        <input name="enddate" type="date" class="form-control form-group form-control-lg">
-         <input type="submit" value="Save" class="btn bg-primary text-light btn-block">
+            <h2 style="text-align:center;" class="text-primary">Add Location</h2>
+        <form action="/addloc" method="POST">
+        <div style="text-align: left;">Enter Location You Want to Add</div>
+        <input name="location" type="text" class="form-control form-group form-control-lg">
+         <input type="submit" value="Add" class="btn bg-primary text-light btn-block">
             <br>
             </form>
-            <div style="text-align: left;">Rights Table</div>
+            <div style="text-align: left;">Locations Table</div>
         <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">UserID</td>
-                    <th scope="col">UnitID</td>
-                    <th scope="col">Start Date</td>
-                    <th scope="col">End Date</td>
+                    <th scope="col">Location ID</td>
+                    <th scope="col">Location Description</td>
                 </tr>
             </thead>
             <tbody>
-                {{#each auths as |a|}}
-                <tr>
-                <td>{{a.UserID}}</td>
-                <td>{{a.UnitID}}</td>
-                <td>{{dateFormat a.StartDate format='DD/MM/YYYY'}}</td>
-                <td>{{dateFormat a.EndDate format='DD/MM/YYYY'}}</td>
-                </tr>
-            {{/each}}
+                {{#each locs as |a|}}
+                    <tr>
+                    <td>{{a.LocationID}}</td>
+                    <td>{{a.LocationDesc}}</td>
+                    </tr>
+                {{/each}}
             </tbody>
         </table>
         </div>

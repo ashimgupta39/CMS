@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    
-    <title>SignUp Page</title>
-    <style>
+
+<style>
     .navbar{
     border-bottom: #6C63FF 3px solid;
     opacity: 0.8;
 }
 </style>
+
 </head>
 <body style="background-color: #F0F0F0;">
+
 <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
         <div class="container">
             <a href="/" class="navbar-brand">CMS</a>
@@ -99,49 +101,15 @@
 <div class="col-lg-5 w-250" style="width: 700px;">
     
     <div class="card primecolor text-center card-form">
-        <div class="card-body">
-            <h2 style="text-align:center;" class="text-primary">SignUp Page</h2>
-            <form action="/registeruser" method="POST">
-                <div style="text-align: left;">Name</div>
-                <input name="Name" type="text" class="form-control form-group form-control-lg"  > 
+        <div class="card-body" id="teacherscard">
+            <h2 style="text-align:center;" class="text-primary">Login Page</h2>
+            <form action="/loginuser" method="POST">  
                 <div style="text-align: left;">Email</div>
-                <input value="{{email}}" name="email" type="email"   class="form-control form-group form-control-lg"   >
-                <div style="text-align: left;">Your Mobile Number</div>
-                <input name="phoneno" type="number" length="10"  class="form-control form-group form-control-lg" >  
-        <div style="text-align: left;">Password</div>
-         <input value="{{password}}" name="passwd" type="password"  class="form-control form-group form-control-lg" > 
-         <div style="text-align: left;">Your Gender</div>
-         <select name="gender" class="form-control form-group form-control-lg">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Others">Others</option>
-        </select>
-
-         <div style="text-align: left;">Choose Your Unit</div>
-         <select name="units" class="form-control form-group form-control-lg">
-             {{#each units as |u|}}
-                <option value="{{u.UnitID}}">{{u.UnitName}}</option>
-            {{/each}}
-        </select>
-         <div style="text-align: left;">Choose Your Department</div>
-         <select name="depts" class="form-control form-group form-control-lg">
-             {{#each depts as |d|}}
-                <option value="{{d.DeptID}}">{{d.DeptName}}</option>
-            {{/each}}
-        </select>
-         <div style="text-align: left;">Select the User Type</div>
-         <select name="usertype" class="form-control form-group form-control-lg">
-            <option value="Admin">Admin</option>
-            <option value="Enduser">End User</option>
-            <option value="Normaluser">Normal User</option>
-            <option value="Superuser">Super User</option>
-            <option value="ITinfrastructure">IT Infrastructure</option>
-        </select>
-         <input type="submit" class="btn bg-primary text-light btn-block">
+                <input type="email" name="email"  class="form-control form-group form-control-lg"   >
+                <div style="text-align: left;">Password </div>
+                <input type="password" name="passwd" class="form-control form-group form-control-lg" >  
+                <input type="submit" class="btn bg-primary text-light btn-block">
                 <br>
-                <div class="text-muted">------------------------------------</div>
-                <div style="font-size: small;">
-                Already Have an Account? <a href="login">LogIn</a>
         </div>
             </form>
         </div>

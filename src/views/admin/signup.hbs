@@ -25,17 +25,29 @@
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    {{#if super}}
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="signup">Sign Up</a>
+                        <div class="dropdown show">
+                            <a class="nav-link primetextcolor" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Complaints
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="compsrecvdpg">Complaints Recieved</a>
+                                <a class="dropdown-item" href="compsassignedpg">Complaints Assigned</a>
+                                <a class="dropdown-item" href="closedcomplaints">Complaints Closed</a>
+                                <a class="dropdown-item" href="complaintsreopened">Complaints Reopened</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="authorize">User Authorization</a>
+                        <a class="nav-link primetextcolor" href="authorize">UserAuthorization</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link primetextcolor" href="signup">SignUpUser</a>
                     </li>
                     <li class="nav-item">
                         <div class="dropdown show">
                             <a class="nav-link primetextcolor" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Asset Management
+                                AssetManagement
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="/assetlist">Asset List</a>
@@ -47,46 +59,12 @@
                             </div>
                         </div>
                     </li>
-                    {{else if admin}}
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="signup">Sign Up</a>
+                        <a class="nav-link primetextcolor" href="#">Hi,{{username}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link primetextcolor" href="authorize">User Authorization</a>
+                        <a class="nav-link primetextcolor" href="logout">Logout</a>
                     </li>
-                    <li class="nav-item">
-                        <div class="dropdown show">
-                            <a class="nav-link primetextcolor" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Asset Management
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="/assetlist">Asset List</a>
-                                <a class="dropdown-item" href="/assetassign">Asset Asssignment</a>
-                                <a class="dropdown-item" href="/addasset">Add Asset</a>
-                                <a class="dropdown-item" href="/addlocation">Add Location</a>
-                                <a class="dropdown-item" href="/assettype">Add Asset Type</a>
-                                <a class="dropdown-item" href="/assetbrand">Add Brand</a>
-                            </div>
-                        </div>
-                    </li>
-                    {{/if}}
-                    {{#if it}}
-                    <li class="nav-item">
-                        <div class="dropdown show">
-                            <a class="nav-link primetextcolor" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Asset Management
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="/assetlist">Asset List</a>
-                                <a class="dropdown-item" href="/assetassign">Asset Asssignment</a>
-                                <a class="dropdown-item" href="/addasset">Add Asset</a>
-                                <a class="dropdown-item" href="/addlocation">Add Location</a>
-                                <a class="dropdown-item" href="/assettype">Add Asset Type</a>
-                                <a class="dropdown-item" href="/assetbrand">Add Brand</a>
-                            </div>
-                        </div>
-                    </li>
-                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -138,10 +116,6 @@
             <option value="ITinfrastructure">IT Infrastructure</option>
         </select>
          <input type="submit" class="btn bg-primary text-light btn-block">
-                <br>
-                <div class="text-muted">------------------------------------</div>
-                <div style="font-size: small;">
-                Already Have an Account? <a href="login">LogIn</a>
         </div>
             </form>
         </div>
